@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+<!-- ... -->
+<body>
+{% block content %}
+<a href="{% url "cal.views.main" year|add:'-3' %}">&lt;&lt; Prev</a>
+<a href="{% url "cal.views.main" year|add:'3' %}">Next &gt;&gt;</a>
+
+    {% for year, months in years %}
+        <div class="clear"></div>
+        <h4>{{ year }}</h4>
+        <table>
+        {% for month in months %}
+        
+            <td style=" border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center; " >
+            <div="black" class={% if month.current %}"current" style="background: #FFA3A3; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;"{% endif %} {% if not month.current %}"month" style="background: #FF1919; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;"{% endif %} > 
+                {% if month.entry %}<b>{% endif %}
+                <a href="{% url "cal.views.month" year month.n%}">{{ month.name }}</a>
+                </td>
+                {% if month.entry %}</b>{% endif %}
+            </div>
+            </td>
+            {% if month.n == 6 %}<tr></tr>{% endif %}
+
+        {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock %}
+</style>
+</body>

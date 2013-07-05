@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<a href= "{% url "cal.views.month" year month "prev" %}">&lt;&lt; Prev</a>
+<a href= "{% url "cal.views.month" year month "next" %}">Next &gt;&gt;</a>
+
+<h4>{{ mname }} {{ year }}</h4>
+
+<div class="month">
+    <table>
+
+    <tr>
+        <td class="empty" style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;"  >Mon</td>
+        <td class="empty" style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;" >Tue</td>
+        <td class="empty" style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;" >Wed</td>
+        <td class="empty" style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;">Thu</td>
+        <td class="empty" style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;">Fri</td>
+        <td class="empty" style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;">Sat</td>
+        <td class="empty" style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center;">Sun</td>
+    </tr>
+
+    {% for week in month_days %}
+        <tr>
+        {% for day, entries, current in week %}
+
+            <!-- TD style: empty | day | current; onClick handler and highlight -->
+            <td class= {% if day == 0 %}"empty"{% endif %}
+            {% if day != 0 and not current %}"day"{% endif %}
+            {% if day != 0 and current %}"current"{% endif %}
+            {% if day != 0 %}
+                onClick="parent.location='{% url "cal.views.day" year month day %}'"
+                onMouseOver="this.bgColor='#eeeeee';"
+                onMouseOut="this.bgColor='green';"
+            {% endif %} style="background: #66CCFF; border: 1px; float: left; margin:10px; height:100px; width: 100px; text-align:center; font-size:5px;" >
+
+            <!-- Day number and entry snippets -->
+            {% if day != 0 %}
+                {{ day }}
+                {% for entry in entries %}
+                    <br />
+                    <b>{{ entry.creator }}</b>: {{ entry.short|safe }}
+                {% endfor %}
+                {% for entry in other_entries %}
+                    <div class="entry">
+                      {{ entry.creator }} |
+                      {{ entry.short|safe }}<br />
+                      {{ entry.body }}<br />
+                    </div>
+                {% endfor %}
+                 <br />
+            {% endif %}
+            </td>
+        {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+
+    <div class="clear"></div>
+</div>
+{% endblock %}
+
+
+
